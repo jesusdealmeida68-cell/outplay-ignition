@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import artwork from "@/assets/outplay-key-art.png.asset.json";
+
+const heroArt = "/hero-key-art.png";
+const SPLASH_MS = 5000;
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -21,7 +23,7 @@ function Index() {
     const start = Date.now();
     async function check() {
       const { data } = await supabase.auth.getUser();
-      const remaining = Math.max(0, 2000 - (Date.now() - start));
+      const remaining = Math.max(0, SPLASH_MS - (Date.now() - start));
       window.setTimeout(() => {
         if (!active) return;
         if (data.user) setReady(true);
@@ -48,11 +50,10 @@ function Index() {
   return <main className="game-stage game-grain arena-beam arena-ground relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-4">
     <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-crimson via-gold to-crimson" />
     {embers.map((ember, index) => <span key={index} className="ember" style={{ left: ember.left, animationDelay: ember.delay, animationDuration: ember.duration }} aria-hidden="true" />)}
-    <img src={artwork.url} alt="OUTPLAY" className="splash-enter relative z-[1] w-[min(112vw,850px)] max-w-none drop-shadow-2xl" />
-    {ready ? <div className="relative z-[1] mt-8 text-center"><p className="font-display text-2xl font-bold uppercase text-gold">A arena está a chegar.</p><Button variant="link" onClick={signOut} className="mt-6 text-muted-foreground">Sair da conta</Button></div> : <div className="absolute bottom-[max(44px,env(safe-area-inset-bottom))] z-[1] flex items-center gap-2" aria-label="A carregar">
-      <span className="size-1.5 rotate-45 bg-gold" />
-      <div className="loading-track h-0.5 w-32 overflow-hidden bg-muted" />
-      <span className="size-1.5 rotate-45 bg-gold" />
+    <img src={heroArt} alt="OUTPLAY" className="splash-enter relative z-[1] w-[min(92vw,420px)] max-w-none rounded-md object-cover drop-shadow-2xl" style={{ aspectRatio: "2/3" }} />
+    {ready ? <div className="relative z-[1] mt-8 text-center"><p className="font-display text-2xl font-bold uppercase text-gold">A arena está a chegar.</p><Button variant="link" onClick={signOut} className="mt-6 text-muted-foreground">Sair da conta</Button></div> : <div className="absolute bottom-[max(44px,env(safe-area-inset-bottom))] z-[1] flex w-[min(80vw,320px)] flex-col items-center gap-2" aria-label="A carregar">
+      <div className="loading-track h-1.5 w-full overflow-hidden rounded-full bg-muted" />
+      <span className="font-display text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">A preparar a arena…</span>
     </div>}
   </main>;
 }

@@ -6,7 +6,7 @@ import { CornerBrackets, RibbonTag, GemDivider, Crown, Rivets } from "@/componen
 import { loginSchema, registerSchema, emailSchema } from "@/lib/auth-validation";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import artwork from "@/assets/outplay-key-art.png.asset.json";
+const heroArt = "/hero-key-art.png";
 
 type Mode = "login" | "register";
 
@@ -98,7 +98,7 @@ export function GameAuth({ mode }: { mode: Mode }) {
 
       <div className="relative mx-auto mt-2 h-[clamp(138px,20dvh,198px)] w-full max-w-[300px]" aria-hidden="true">
         <div className="arena-beam art-plate relative h-full w-full overflow-hidden">
-          <img src={artwork.url} alt="" className="absolute z-[1] left-1/2 top-1/2 w-full max-w-none -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-2xl" />
+          <img src={heroArt} alt="" className="absolute z-[1] left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover drop-shadow-2xl" />
         </div>
         <CornerBrackets offset={-10} />
       </div>

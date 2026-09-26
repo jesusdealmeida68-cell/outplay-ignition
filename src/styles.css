@@ -167,7 +167,7 @@
 }
 
 @utility loading-track {
-  &::after { content: ""; display: block; height: 100%; width: 100%; transform-origin: left; background: linear-gradient(90deg, var(--crimson), var(--gold)); animation: load-bar 2s linear both; }
+  &::after { content: ""; display: block; height: 100%; width: 100%; transform-origin: left; background: linear-gradient(90deg, var(--crimson), var(--gold)); animation: load-bar 5s linear both; }
 }
 
 /* Soft arena floor band at the bottom of the screen. */
