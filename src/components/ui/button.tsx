@@ -16,8 +16,8 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        game: "bg-primary text-primary-foreground font-display font-bold uppercase tracking-wider shadow-[0_6px_0_var(--color-primary-edge)] hover:brightness-110 active:translate-y-1 active:shadow-none",
-        gameOutline: "border border-border-strong bg-surface text-foreground font-semibold hover:bg-accent",
+        game: "btn-jewel text-primary-foreground font-display font-bold uppercase tracking-wider transition-[filter,transform,box-shadow] duration-150 hover:brightness-110 active:translate-y-[5px] active:btn-jewel-pressed",
+        gameOutline: "btn-plate border border-border-strong text-foreground font-semibold transition-colors hover:bg-accent active:translate-y-px",
       },
       size: {
         default: "h-9 px-4 py-2",
