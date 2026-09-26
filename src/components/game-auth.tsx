@@ -1,11 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Mail, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CornerBrackets, RibbonTag, GemDivider, Crown, Rivets } from "@/components/ornament";
 import { loginSchema, registerSchema, emailSchema } from "@/lib/auth-validation";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+
 const heroArt = "/hero-key-art.png";
 
 type Mode = "login" | "register";
@@ -20,6 +20,8 @@ function errorMessage(message: string) {
   if (/email rate limit/i.test(message)) return "Muitas tentativas. Aguarda um momento e tenta novamente.";
   return "Não foi possível concluir. Tenta novamente.";
 }
+
+const STEPS = ["Entrar", "Verificar", "Confirmar"];
 
 export function GameAuth({ mode }: { mode: Mode }) {
   const navigate = useNavigate();
@@ -87,44 +89,70 @@ export function GameAuth({ mode }: { mode: Mode }) {
     }
   }
 
-  return <main className="game-stage game-grain arena-ground relative min-h-dvh overflow-hidden">
-    <div className="pointer-events-none absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-crimson via-gold to-crimson" />
-    <div className="relative mx-auto flex min-h-dvh w-full max-w-[460px] flex-col px-7 pb-8 pt-[max(28px,env(safe-area-inset-top))] sm:px-10">
-      <header className="flex items-center justify-between gap-4">
-        {recovery ? <Button variant="ghost" size="icon" type="button" onClick={() => { setRecovery(false); setSent(false); setError(""); }} aria-label="Voltar ao login"><ArrowLeft /></Button> : <span className="h-9 w-9" />}
-        <span className="font-display text-xl font-black uppercase text-gold">OUTPLAY <span className="text-crimson">◆</span></span>
-        <span className="h-9 w-9" />
-      </header>
+  const stepIndex = recovery ? 1 : 0;
 
-      <div className="relative mx-auto mt-2 h-[clamp(138px,20dvh,198px)] w-full max-w-[300px]" aria-hidden="true">
-        <div className="arena-beam art-plate relative h-full w-full overflow-hidden">
-          <img src={heroArt} alt="" className="absolute z-[1] left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover drop-shadow-2xl" />
-        </div>
-        <CornerBrackets offset={-10} />
+  return <main className="relative flex min-h-dvh flex-col bg-white">
+    {/* Blue header with step progress, like the reference design */}
+    <div className="relative overflow-hidden bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6] pb-6 pt-[max(20px,env(safe-area-inset-top))]">
+      <img src={heroArt} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-20 mix-blend-luminosity" />
+      <div className="relative mx-auto flex w-full max-w-[460px] items-center justify-between px-6">
+        <span className="font-display text-lg font-black uppercase tracking-wide text-white">OUTPLAY</span>
+        <Link to="/" aria-label="Fechar" className="flex size-9 items-center justify-center rounded-full text-white/90 transition-colors hover:bg-white/10"><X className="size-5" /></Link>
       </div>
-
-      <div className="relative mt-5 flex-1">
-        <div className="wood-panel relative rounded-md px-5 pb-7 pt-9 sm:px-7">
-          <Rivets inset={9} />
-          <div className="absolute -top-4 left-5"><RibbonTag><Crown className="mr-1.5 inline-block size-3 -translate-y-px text-primary-foreground" />{recovery ? "Recuperação de acesso" : mode === "register" ? "Novo jogador" : "Regresso à arena"}</RibbonTag></div>
-          <h1 className="font-display text-[clamp(32px,10vw,44px)] font-black uppercase leading-[.95] text-foreground">{recovery ? "Recuperar acesso" : mode === "register" ? "Criar conta" : "Bem-vindo de volta"}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{recovery ? "Enviaremos um link para o teu e-mail." : mode === "register" ? "A tua jornada começa aqui." : "A arena está à tua espera."}</p>
-
-          {sent ? <div className="mt-8 border-l-2 border-primary bg-surface p-4 text-sm leading-relaxed">Se existir uma conta com este e-mail, receberás um link para redefinir a palavra-passe.</div> :
-            <form onSubmit={submit} noValidate className="mt-6 space-y-4">
-              {mode === "register" && !recovery && <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">Nome de jogador</span><input autoComplete="nickname" maxLength={24} value={playerName} onChange={e => setPlayerName(e.target.value)} placeholder="O teu nome na arena" aria-invalid={Boolean(fieldErrors['playerName'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" />{fieldErrors['playerName'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['playerName']}</span>}</label>}
-              <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">E-mail</span><input type="email" inputMode="email" autoComplete="email" maxLength={255} value={email} onChange={e => setEmail(e.target.value)} placeholder="O teu e-mail" aria-invalid={Boolean(fieldErrors['email'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" />{fieldErrors['email'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['email']}</span>}</label>
-              {!recovery && <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">Palavra-passe</span><span className="relative block"><input type={visible ? "text" : "password"} autoComplete={mode === "register" ? "new-password" : "current-password"} maxLength={128} value={password} onChange={e => setPassword(e.target.value)} placeholder="A tua palavra-passe" aria-invalid={Boolean(fieldErrors['password'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 pr-14 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" /><Button variant="ghost" size="icon" type="button" onClick={() => setVisible(!visible)} aria-label={visible ? "Ocultar palavra-passe" : "Mostrar palavra-passe"} title={visible ? "Ocultar palavra-passe" : "Mostrar palavra-passe"} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">{visible ? <EyeOff /> : <Eye />}</Button></span>{fieldErrors['password'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['password']}</span>}</label>}
-              {mode === "register" && !recovery && <p className="text-xs text-muted-foreground">Mínimo de 8 caracteres, com maiúscula, minúscula e número.</p>}
-              {mode === "login" && !recovery && <div className="text-right"><Button variant="link" type="button" onClick={() => { setRecovery(true); setError(""); setFieldErrors({}); }} className="h-auto p-0 text-sm font-semibold text-gold">Esqueceu a palavra-passe?</Button></div>}
-              {error && <p role="alert" className="border-l-2 border-destructive bg-surface p-3 text-sm text-destructive">{error}</p>}
-              <Button variant="game" type="submit" disabled={pending} className="mt-2 h-14 w-full text-lg">{pending ? "Aguarda..." : recovery ? "ENVIAR LINK" : mode === "register" ? "CRIAR CONTA" : "ENTRAR"}<ArrowRight className="ml-auto" /></Button>
-            </form>}
-          {mode === "login" && !recovery && <div className="mt-7"><GemDivider label="ou" /><Button type="button" variant="gameOutline" disabled={pending} onClick={googleSignIn} className="mt-5 h-13 w-full text-sm"><GoogleIcon />Continuar com Google</Button></div>}
+      <div className="relative mx-auto mt-5 w-full max-w-[460px] px-6">
+        <div className="flex items-center justify-between text-xs font-semibold text-white/70">
+          {STEPS.map((step, index) => <span key={step} className={index === stepIndex ? "text-white" : ""}>{step}</span>)}
+        </div>
+        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/25">
+          <div className="h-full rounded-full bg-white transition-all" style={{ width: `${((stepIndex + 1) / STEPS.length) * 100}%` }} />
         </div>
       </div>
+    </div>
 
-      {!recovery && <footer className="relative mt-7 text-center text-sm text-muted-foreground">{mode === "register" ? "Já tens uma conta? " : "Ainda não tens uma conta? "}<Link to={mode === "register" ? "/auth" : "/register"} className="font-bold text-gold underline-offset-4 hover:underline">{mode === "register" ? "Entrar" : "Criar conta"}</Link></footer>}
+    {/* White card */}
+    <div className="relative mx-auto flex w-full max-w-[460px] flex-1 flex-col px-6 pb-10 pt-8 sm:px-8">
+      <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-[#EFF4FF]">
+        <Mail className="size-9 text-[#2563EB]" />
+      </div>
+      <h1 className="mt-6 text-center text-2xl font-bold text-[#0F172A]">{recovery ? "Recuperar acesso" : mode === "register" ? "Criar conta" : "Entrar"}</h1>
+      <p className="mt-2 text-center text-sm text-[#64748B]">{recovery ? "Indica o teu e-mail para receberes um link de acesso." : mode === "register" ? "Indica os teus dados para criar a tua conta OUTPLAY." : "Indica o teu e-mail e palavra-passe para entrar."}</p>
+
+      {sent ? <div className="mt-8 rounded-xl bg-[#EFF4FF] p-4 text-sm leading-relaxed text-[#1E3A8A]">Se existir uma conta com este e-mail, receberás um link para redefinir a palavra-passe.</div> :
+        <form onSubmit={submit} noValidate className="mt-7 space-y-4">
+          {mode === "register" && !recovery && <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold text-[#475569]">Nome de jogador</span>
+            <input autoComplete="nickname" maxLength={24} value={playerName} onChange={e => setPlayerName(e.target.value)} placeholder="O teu nome na arena" aria-invalid={Boolean(fieldErrors["playerName"])} className="h-13 w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 text-base text-[#0F172A] outline-none transition-colors placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:bg-white focus:ring-2 focus:ring-[#2563EB]/20" />
+            {fieldErrors["playerName"] && <span className="mt-1 block text-xs text-red-600">{fieldErrors["playerName"]}</span>}
+          </label>}
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold text-[#475569]">E-mail</span>
+            <input type="email" inputMode="email" autoComplete="email" maxLength={255} value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter email" aria-invalid={Boolean(fieldErrors["email"])} className="h-13 w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 text-base text-[#0F172A] outline-none transition-colors placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:bg-white focus:ring-2 focus:ring-[#2563EB]/20" />
+            {fieldErrors["email"] && <span className="mt-1 block text-xs text-red-600">{fieldErrors["email"]}</span>}
+          </label>
+          {!recovery && <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold text-[#475569]">Palavra-passe</span>
+            <span className="relative block">
+              <input type={visible ? "text" : "password"} autoComplete={mode === "register" ? "new-password" : "current-password"} maxLength={128} value={password} onChange={e => setPassword(e.target.value)} placeholder="A tua palavra-passe" aria-invalid={Boolean(fieldErrors["password"])} className="h-13 w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 pr-12 text-base text-[#0F172A] outline-none transition-colors placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:bg-white focus:ring-2 focus:ring-[#2563EB]/20" />
+              <Button variant="ghost" size="icon" type="button" onClick={() => setVisible(!visible)} aria-label={visible ? "Ocultar palavra-passe" : "Mostrar palavra-passe"} className="absolute right-1 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:bg-transparent hover:text-[#2563EB]">{visible ? <EyeOff className="size-5" /> : <Eye className="size-5" />}</Button>
+            </span>
+            {fieldErrors["password"] && <span className="mt-1 block text-xs text-red-600">{fieldErrors["password"]}</span>}
+          </label>}
+          {mode === "register" && !recovery && <p className="text-xs text-[#94A3B8]">Mínimo de 8 caracteres, com maiúscula, minúscula e número.</p>}
+          {mode === "login" && !recovery && <div className="text-right"><Button variant="link" type="button" onClick={() => { setRecovery(true); setError(""); setFieldErrors({}); }} className="h-auto p-0 text-sm font-semibold text-[#2563EB]">Esqueceste a palavra-passe?</Button></div>}
+          {error && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+
+          <div className="flex gap-3 pt-2">
+            {recovery ? <Button type="button" variant="outline" onClick={() => { setRecovery(false); setSent(false); setError(""); }} className="h-13 flex-1 rounded-xl border-[#E2E8F0] text-[#475569]">CANCELAR</Button> : <Link to="/" className="flex h-13 flex-1 items-center justify-center rounded-xl border border-[#E2E8F0] text-sm font-semibold text-[#475569] transition-colors hover:bg-[#F8FAFC]">CANCELAR</Link>}
+            <Button type="submit" disabled={pending} className="h-13 flex-1 rounded-xl bg-[#2563EB] text-sm font-semibold text-white hover:bg-[#1D4ED8]">{pending ? "Aguarda..." : recovery ? "ENVIAR" : mode === "register" ? "CRIAR CONTA" : "ENTRAR"}</Button>
+          </div>
+        </form>}
+
+      {mode === "login" && !recovery && <div className="mt-6">
+        <div className="flex items-center gap-3 text-xs font-medium text-[#94A3B8]"><span className="h-px flex-1 bg-[#E2E8F0]" />ou<span className="h-px flex-1 bg-[#E2E8F0]" /></div>
+        <Button type="button" variant="outline" disabled={pending} onClick={googleSignIn} className="mt-5 h-13 w-full rounded-xl border-[#E2E8F0] text-sm text-[#0F172A] hover:bg-[#F8FAFC]"><GoogleIcon />Continuar com Google</Button>
+      </div>}
+
+      {!recovery && <p className="mt-8 text-center text-sm text-[#94A3B8]">{mode === "register" ? "Já tens uma conta? " : "Ainda não tens uma conta? "}<Link to={mode === "register" ? "/auth" : "/register"} className="font-semibold text-[#2563EB] underline-offset-4 hover:underline">{mode === "register" ? "Entrar" : "Criar conta"}</Link></p>}
     </div>
   </main>;
 }

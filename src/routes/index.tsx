@@ -39,21 +39,12 @@ function Index() {
     navigate({ to: "/auth", replace: true });
   }
 
-  const embers = [
-    { left: "18%", delay: "-1.2s", duration: "5.5s" },
-    { left: "34%", delay: "-3.8s", duration: "6.4s" },
-    { left: "58%", delay: "-.6s", duration: "5s" },
-    { left: "74%", delay: "-4.6s", duration: "6.8s" },
-    { left: "87%", delay: "-2.4s", duration: "5.9s" },
-  ];
-
-  return <main className="game-stage game-grain arena-beam arena-ground relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-4">
-    <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-crimson via-gold to-crimson" />
-    {embers.map((ember, index) => <span key={index} className="ember" style={{ left: ember.left, animationDelay: ember.delay, animationDuration: ember.duration }} aria-hidden="true" />)}
-    <img src={heroArt} alt="OUTPLAY" className="splash-enter relative z-[1] w-[min(92vw,420px)] max-w-none rounded-md object-cover drop-shadow-2xl" style={{ aspectRatio: "2/3" }} />
-    {ready ? <div className="relative z-[1] mt-8 text-center"><p className="font-display text-2xl font-bold uppercase text-gold">A arena está a chegar.</p><Button variant="link" onClick={signOut} className="mt-6 text-muted-foreground">Sair da conta</Button></div> : <div className="absolute bottom-[max(44px,env(safe-area-inset-bottom))] z-[1] flex w-[min(80vw,320px)] flex-col items-center gap-2" aria-label="A carregar">
-      <div className="loading-track h-1.5 w-full overflow-hidden rounded-full bg-muted" />
-      <span className="font-display text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">A preparar a arena…</span>
+  return <main className="relative flex min-h-dvh flex-col items-center justify-end overflow-hidden bg-black">
+    <img src={heroArt} alt="OUTPLAY" className="absolute inset-0 z-0 h-full w-full object-cover" />
+    <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/80 via-black/0 to-black/30" />
+    {ready ? <div className="relative z-[2] mb-10 text-center"><p className="font-display text-2xl font-bold uppercase text-gold drop-shadow-lg">A arena está a chegar.</p><Button variant="link" onClick={signOut} className="mt-6 text-white/80">Sair da conta</Button></div> : <div className="relative z-[2] mb-[max(44px,env(safe-area-inset-bottom))] flex w-[min(80vw,320px)] flex-col items-center gap-2" aria-label="A carregar">
+      <div className="loading-track h-1.5 w-full overflow-hidden rounded-full bg-white/20" />
+      <span className="font-display text-xs font-bold uppercase tracking-[0.2em] text-white/90">A preparar a arena…</span>
     </div>}
   </main>;
 }
