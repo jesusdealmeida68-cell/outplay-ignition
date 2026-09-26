@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep OUTPLAY's public entry screens as TanStack routes and the signed-in holding state at `/` until the game exists; this avoids inventing a main game menu.
+- Store the player's name in a private RLS-protected profile row keyed by auth identity, leaving `outplay_id` nullable for later generation.

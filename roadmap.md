@@ -1,0 +1,3 @@
+- [x] Configure email/password and Google sign-in with automatic registration sign-in.
+- [x] Add private player profiles with a future OUTPLAY ID field.
+- [x] Build and check splash, login, and registration screens and their transitions.
