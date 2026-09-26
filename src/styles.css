@@ -31,29 +31,29 @@
 }
 
 :root {
-  --background: oklch(0.115 0.012 35);
-  --foreground: oklch(0.97 0.013 88);
-  --card: oklch(0.17 0.016 35);
+  --background: oklch(0.12 0.022 253);
+  --foreground: oklch(0.97 0.012 236);
+  --card: oklch(0.175 0.026 250);
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
-  --primary: oklch(0.8 0.143 78);
-  --primary-foreground: oklch(0.17 0.025 44);
-  --primary-edge: oklch(0.53 0.11 62);
-  --secondary: oklch(0.23 0.02 33);
+  --primary: oklch(0.74 0.15 237);
+  --primary-foreground: oklch(0.15 0.03 250);
+  --primary-edge: oklch(0.4 0.14 248);
+  --secondary: oklch(0.23 0.03 246);
   --secondary-foreground: var(--foreground);
-  --muted: oklch(0.21 0.014 35);
-  --muted-foreground: oklch(0.68 0.017 70);
-  --accent: oklch(0.29 0.026 37);
+  --muted: oklch(0.21 0.022 250);
+  --muted-foreground: oklch(0.68 0.02 235);
+  --accent: oklch(0.29 0.035 248);
   --accent-foreground: var(--foreground);
   --destructive: oklch(0.7 0.18 24);
-  --border: oklch(0.38 0.025 59 / 42%);
-  --border-strong: oklch(0.55 0.035 64 / 65%);
-  --input: oklch(0.2 0.018 35);
+  --border: oklch(0.4 0.035 245 / 42%);
+  --border-strong: oklch(0.56 0.045 245 / 65%);
+  --input: oklch(0.2 0.026 250);
   --ring: var(--primary);
-  --surface: oklch(0.19 0.014 35);
-  --gold: oklch(0.85 0.113 83);
-  --crimson: oklch(0.56 0.168 25);
+  --surface: oklch(0.19 0.024 250);
+  --gold: oklch(0.8 0.13 219);
+  --crimson: oklch(0.54 0.2 300);
   --radius: 0.25rem;
 }
 
@@ -112,6 +112,25 @@
   box-shadow: 0 2px 0 color-mix(in oklch, var(--primary-edge) 82%, black 25%);
 }
 
+/* Riveted wood/leather signboard that hosts the main form, like a quest plaque in a mobile arena game. */
+@utility wood-panel {
+  position: relative;
+  background:
+    repeating-linear-gradient(180deg, color-mix(in oklch, black 9%, transparent) 0 2px, transparent 2px 27px),
+    linear-gradient(165deg, color-mix(in oklch, var(--surface) 100%, white 5%), color-mix(in oklch, var(--surface) 100%, black 22%));
+  box-shadow:
+    0 18px 34px -18px color-mix(in oklch, black 78%, transparent),
+    inset 0 1px 0 color-mix(in oklch, white 8%, transparent),
+    inset 0 -14px 22px -16px color-mix(in oklch, black 55%, transparent),
+    inset 0 0 0 1px color-mix(in oklch, var(--gold) 30%, transparent);
+}
+
+/* Small bolt/rivet dot for wood-panel corners. */
+@utility rivet {
+  background: radial-gradient(circle at 34% 30%, color-mix(in oklch, white 60%, var(--gold)), var(--primary-edge) 72%);
+  box-shadow: 0 1px 2px color-mix(in oklch, black 65%, transparent), inset 0 -1px 1px color-mix(in oklch, black 35%, transparent);
+}
+
 /* Jewel-cut primary button: gradient face, inset gloss, thick bottom bevel that compresses on press. */
 @utility btn-jewel {
   position: relative;
@@ -149,6 +168,22 @@
 
 @utility loading-track {
   &::after { content: ""; display: block; height: 100%; width: 100%; transform-origin: left; background: linear-gradient(90deg, var(--crimson), var(--gold)); animation: load-bar 2s linear both; }
+}
+
+/* Soft arena floor band at the bottom of the screen. */
+@utility arena-ground {
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 24%;
+    background:
+      repeating-linear-gradient(180deg, color-mix(in oklch, var(--gold) 4%, transparent) 0 1px, transparent 1px 34px),
+      linear-gradient(180deg, transparent, color-mix(in oklch, black 42%, transparent));
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 @utility ember {

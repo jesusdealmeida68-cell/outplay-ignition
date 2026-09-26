@@ -9,6 +9,30 @@ function Corner({ className, style }: { className?: string; style?: CSSPropertie
   );
 }
 
+/** Small three-point crown, used as a flourish above headlines and status tags. */
+export function Crown({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 34" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M4 30 2 11l12 8L24 3l10 16 12-8-2 19Z" />
+      <circle cx="24" cy="3.5" r="2.6" />
+      <circle cx="2.5" cy="11" r="2.1" />
+      <circle cx="45.5" cy="11" r="2.1" />
+    </svg>
+  );
+}
+
+/** Four bolt-like rivets in the corners of a relatively-positioned parent, for a riveted wood/metal plaque look. */
+export function Rivets({ inset = 10 }: { inset?: number }) {
+  return (
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      <span className="rivet absolute size-[7px] rounded-full" style={{ left: inset, top: inset }} />
+      <span className="rivet absolute size-[7px] rounded-full" style={{ right: inset, top: inset }} />
+      <span className="rivet absolute size-[7px] rounded-full" style={{ right: inset, bottom: inset }} />
+      <span className="rivet absolute size-[7px] rounded-full" style={{ left: inset, bottom: inset }} />
+    </div>
+  );
+}
+
 /** Four gold corner brackets around a relatively-positioned parent, like a card frame in a mobile game UI. */
 export function CornerBrackets({ offset = -9, className = "" }: { offset?: number; className?: string }) {
   return (

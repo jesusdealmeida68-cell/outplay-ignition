@@ -45,7 +45,7 @@ function Index() {
     { left: "87%", delay: "-2.4s", duration: "5.9s" },
   ];
 
-  return <main className="game-stage game-grain arena-beam relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-4">
+  return <main className="game-stage game-grain arena-beam arena-ground relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-4">
     <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-crimson via-gold to-crimson" />
     {embers.map((ember, index) => <span key={index} className="ember" style={{ left: ember.left, animationDelay: ember.delay, animationDuration: ember.duration }} aria-hidden="true" />)}
     <img src={artwork.url} alt="OUTPLAY" className="splash-enter relative z-[1] w-[min(112vw,850px)] max-w-none drop-shadow-2xl" />

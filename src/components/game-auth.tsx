@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CornerBrackets, RibbonTag, GemDivider } from "@/components/ornament";
+import { CornerBrackets, RibbonTag, GemDivider, Crown, Rivets } from "@/components/ornament";
 import { loginSchema, registerSchema, emailSchema } from "@/lib/auth-validation";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -87,7 +87,7 @@ export function GameAuth({ mode }: { mode: Mode }) {
     }
   }
 
-  return <main className="game-stage game-grain relative min-h-dvh overflow-hidden">
+  return <main className="game-stage game-grain arena-ground relative min-h-dvh overflow-hidden">
     <div className="pointer-events-none absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-crimson via-gold to-crimson" />
     <div className="relative mx-auto flex min-h-dvh w-full max-w-[460px] flex-col px-7 pb-8 pt-[max(28px,env(safe-area-inset-top))] sm:px-10">
       <header className="flex items-center justify-between gap-4">
@@ -103,22 +103,25 @@ export function GameAuth({ mode }: { mode: Mode }) {
         <CornerBrackets offset={-10} />
       </div>
 
-      <div className="relative mt-2 flex-1">
-        <RibbonTag>{recovery ? "Recuperação de acesso" : mode === "register" ? "Novo jogador" : "Regresso à arena"}</RibbonTag>
-        <h1 className="mt-4 font-display text-[clamp(36px,11vw,48px)] font-black uppercase leading-[.95] text-foreground">{recovery ? "Recuperar acesso" : mode === "register" ? "Criar conta" : "Bem-vindo de volta"}</h1>
-        <p className="mt-2 text-sm text-muted-foreground">{recovery ? "Enviaremos um link para o teu e-mail." : mode === "register" ? "A tua jornada começa aqui." : "A arena está à tua espera."}</p>
+      <div className="relative mt-5 flex-1">
+        <div className="wood-panel relative rounded-md px-5 pb-7 pt-9 sm:px-7">
+          <Rivets inset={9} />
+          <div className="absolute -top-4 left-5"><RibbonTag><Crown className="mr-1.5 inline-block size-3 -translate-y-px text-primary-foreground" />{recovery ? "Recuperação de acesso" : mode === "register" ? "Novo jogador" : "Regresso à arena"}</RibbonTag></div>
+          <h1 className="font-display text-[clamp(32px,10vw,44px)] font-black uppercase leading-[.95] text-foreground">{recovery ? "Recuperar acesso" : mode === "register" ? "Criar conta" : "Bem-vindo de volta"}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{recovery ? "Enviaremos um link para o teu e-mail." : mode === "register" ? "A tua jornada começa aqui." : "A arena está à tua espera."}</p>
 
-        {sent ? <div className="mt-8 border-l-2 border-primary bg-surface p-4 text-sm leading-relaxed">Se existir uma conta com este e-mail, receberás um link para redefinir a palavra-passe.</div> :
-          <form onSubmit={submit} noValidate className="mt-6 space-y-4">
-            {mode === "register" && !recovery && <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">Nome de jogador</span><input autoComplete="nickname" maxLength={24} value={playerName} onChange={e => setPlayerName(e.target.value)} placeholder="O teu nome na arena" aria-invalid={Boolean(fieldErrors['playerName'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" />{fieldErrors['playerName'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['playerName']}</span>}</label>}
-            <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">E-mail</span><input type="email" inputMode="email" autoComplete="email" maxLength={255} value={email} onChange={e => setEmail(e.target.value)} placeholder="O teu e-mail" aria-invalid={Boolean(fieldErrors['email'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" />{fieldErrors['email'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['email']}</span>}</label>
-            {!recovery && <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">Palavra-passe</span><span className="relative block"><input type={visible ? "text" : "password"} autoComplete={mode === "register" ? "new-password" : "current-password"} maxLength={128} value={password} onChange={e => setPassword(e.target.value)} placeholder="A tua palavra-passe" aria-invalid={Boolean(fieldErrors['password'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 pr-14 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" /><Button variant="ghost" size="icon" type="button" onClick={() => setVisible(!visible)} aria-label={visible ? "Ocultar palavra-passe" : "Mostrar palavra-passe"} title={visible ? "Ocultar palavra-passe" : "Mostrar palavra-passe"} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">{visible ? <EyeOff /> : <Eye />}</Button></span>{fieldErrors['password'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['password']}</span>}</label>}
-            {mode === "register" && !recovery && <p className="text-xs text-muted-foreground">Mínimo de 8 caracteres, com maiúscula, minúscula e número.</p>}
-            {mode === "login" && !recovery && <div className="text-right"><Button variant="link" type="button" onClick={() => { setRecovery(true); setError(""); setFieldErrors({}); }} className="h-auto p-0 text-sm font-semibold text-gold">Esqueceu a palavra-passe?</Button></div>}
-            {error && <p role="alert" className="border-l-2 border-destructive bg-surface p-3 text-sm text-destructive">{error}</p>}
-            <Button variant="game" type="submit" disabled={pending} className="mt-2 h-14 w-full text-lg">{pending ? "Aguarda..." : recovery ? "ENVIAR LINK" : mode === "register" ? "CRIAR CONTA" : "ENTRAR"}<ArrowRight className="ml-auto" /></Button>
-          </form>}
-        {mode === "login" && !recovery && <div className="mt-7"><GemDivider label="ou" /><Button type="button" variant="gameOutline" disabled={pending} onClick={googleSignIn} className="mt-5 h-13 w-full text-sm"><GoogleIcon />Continuar com Google</Button></div>}
+          {sent ? <div className="mt-8 border-l-2 border-primary bg-surface p-4 text-sm leading-relaxed">Se existir uma conta com este e-mail, receberás um link para redefinir a palavra-passe.</div> :
+            <form onSubmit={submit} noValidate className="mt-6 space-y-4">
+              {mode === "register" && !recovery && <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">Nome de jogador</span><input autoComplete="nickname" maxLength={24} value={playerName} onChange={e => setPlayerName(e.target.value)} placeholder="O teu nome na arena" aria-invalid={Boolean(fieldErrors['playerName'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" />{fieldErrors['playerName'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['playerName']}</span>}</label>}
+              <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">E-mail</span><input type="email" inputMode="email" autoComplete="email" maxLength={255} value={email} onChange={e => setEmail(e.target.value)} placeholder="O teu e-mail" aria-invalid={Boolean(fieldErrors['email'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" />{fieldErrors['email'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['email']}</span>}</label>
+              {!recovery && <label className="block"><span className="mb-2 block text-xs font-bold uppercase text-muted-foreground">Palavra-passe</span><span className="relative block"><input type={visible ? "text" : "password"} autoComplete={mode === "register" ? "new-password" : "current-password"} maxLength={128} value={password} onChange={e => setPassword(e.target.value)} placeholder="A tua palavra-passe" aria-invalid={Boolean(fieldErrors['password'])} className="h-13 w-full rounded-sm border border-border field-slot px-4 pr-14 text-base text-foreground outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary" /><Button variant="ghost" size="icon" type="button" onClick={() => setVisible(!visible)} aria-label={visible ? "Ocultar palavra-passe" : "Mostrar palavra-passe"} title={visible ? "Ocultar palavra-passe" : "Mostrar palavra-passe"} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">{visible ? <EyeOff /> : <Eye />}</Button></span>{fieldErrors['password'] && <span className="mt-1 block text-xs text-destructive">{fieldErrors['password']}</span>}</label>}
+              {mode === "register" && !recovery && <p className="text-xs text-muted-foreground">Mínimo de 8 caracteres, com maiúscula, minúscula e número.</p>}
+              {mode === "login" && !recovery && <div className="text-right"><Button variant="link" type="button" onClick={() => { setRecovery(true); setError(""); setFieldErrors({}); }} className="h-auto p-0 text-sm font-semibold text-gold">Esqueceu a palavra-passe?</Button></div>}
+              {error && <p role="alert" className="border-l-2 border-destructive bg-surface p-3 text-sm text-destructive">{error}</p>}
+              <Button variant="game" type="submit" disabled={pending} className="mt-2 h-14 w-full text-lg">{pending ? "Aguarda..." : recovery ? "ENVIAR LINK" : mode === "register" ? "CRIAR CONTA" : "ENTRAR"}<ArrowRight className="ml-auto" /></Button>
+            </form>}
+          {mode === "login" && !recovery && <div className="mt-7"><GemDivider label="ou" /><Button type="button" variant="gameOutline" disabled={pending} onClick={googleSignIn} className="mt-5 h-13 w-full text-sm"><GoogleIcon />Continuar com Google</Button></div>}
+        </div>
       </div>
 
       {!recovery && <footer className="relative mt-7 text-center text-sm text-muted-foreground">{mode === "register" ? "Já tens uma conta? " : "Ainda não tens uma conta? "}<Link to={mode === "register" ? "/auth" : "/register"} className="font-bold text-gold underline-offset-4 hover:underline">{mode === "register" ? "Entrar" : "Criar conta"}</Link></footer>}
