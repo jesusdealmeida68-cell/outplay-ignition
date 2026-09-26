@@ -48,7 +48,11 @@ export function GameAuth({ mode }: { mode: Mode }) {
     }
     const parsed = mode === "register" ? registerSchema.safeParse({ email, password, playerName }) : loginSchema.safeParse({ email, password });
     if (!parsed.success) {
-      setFieldErrors(Object.fromEntries(parsed.error.issues.map(issue => [String(issue.path[0]), issue.message])));
+      setFieldErrors(parsed.error.issues.reduce<Record<string, string>>((errors, issue) => {
+        const field = String(issue.path[0]);
+        if (!errors[field]) errors[field] = issue.message;
+        return errors;
+      }, {}));
       return;
     }
     setPending(true);
@@ -91,7 +95,7 @@ export function GameAuth({ mode }: { mode: Mode }) {
         <span className="h-9 w-9" />
       </header>
 
-      <div className="relative mx-auto mt-4 h-[clamp(150px,23dvh,220px)] w-full max-w-[360px] overflow-hidden" aria-hidden="true">
+      <div className="relative mx-auto mt-3 h-[clamp(135px,20dvh,195px)] w-full max-w-[360px] overflow-hidden" aria-hidden="true">
         <img src={artwork.url} alt="" className="absolute left-1/2 top-1/2 w-full max-w-none -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-2xl" />
       </div>
 
