@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { Swords, Sparkles, Gem, Coins, Menu, Bell, Package, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CornerBrackets, Crown, Rivets } from "@/components/ornament";
@@ -131,6 +131,15 @@ function HomeDashboard() {
         >
           <Menu className="size-4" />
         </Button>
+      </div>
+
+      <div className="relative z-[2] mt-3 px-4">
+        <Link
+          to="/characters"
+          className="btn-plate flex items-center justify-center gap-2 rounded-md border border-border-strong py-2 text-xs font-bold uppercase tracking-wide text-gold"
+        >
+          Ver personagens animados
+        </Link>
       </div>
 
       {/* Player strip */}

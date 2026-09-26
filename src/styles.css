@@ -200,6 +200,37 @@
 @keyframes splash-reveal { from { opacity: 0; transform: scale(.86); filter: blur(9px); } to { opacity: 1; transform: scale(1); filter: blur(0); } }
 @keyframes load-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes ember-rise { from { transform: translateY(0) scale(1); opacity: 0; } 15% { opacity: .9; } to { transform: translateY(-92dvh) scale(.4); opacity: 0; } }
+
+/* Character stage: a small original SVG "actor" that reacts to a game-state
+   class instead of a video/sprite file — cheap, themeable, easy to extend. */
+.char-stage { position: relative; width: 108px; height: 126px; }
+.char-svg { width: 100%; height: 100%; overflow: visible; }
+.char-shadow { fill: color-mix(in oklch, black 55%, transparent); }
+.char-body-group { transform-origin: 60px 96px; }
+.char-arm { transform-origin: 82px 62px; }
+.char-weapon { transform-origin: 85px 70px; }
+
+.char-idle .char-body-group { animation: char-breathe 2.6s ease-in-out infinite; }
+.char-idle .char-arm { animation: char-arm-sway 2.6s ease-in-out infinite; }
+
+.char-attack .char-body-group { animation: char-lunge .42s ease-out; }
+.char-attack .char-weapon { animation: char-swing .42s cubic-bezier(.2,.9,.3,1); }
+
+.char-hit .char-body-group { animation: char-flinch .32s ease-out; }
+.char-hit .char-svg { animation: char-flash .32s ease-out; }
+
+.char-defeat .char-body-group { animation: char-fall .5s ease-in forwards; }
+.char-defeat .char-shadow { animation: char-shadow-shrink .5s ease-in forwards; }
+
+@keyframes char-breathe { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-3px) scale(1.015, .985); } }
+@keyframes char-arm-sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }
+@keyframes char-lunge { 0% { transform: translateX(0); } 35% { transform: translateX(10px) rotate(-3deg); } 100% { transform: translateX(0) rotate(0); } }
+@keyframes char-swing { 0% { transform: rotate(0deg); } 40% { transform: rotate(-70deg); } 70% { transform: rotate(20deg); } 100% { transform: rotate(0deg); } }
+@keyframes char-flinch { 0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 55% { transform: translateX(5px); } 100% { transform: translateX(0); } }
+@keyframes char-flash { 0%, 100% { filter: none; } 40% { filter: brightness(2) saturate(0) drop-shadow(0 0 6px white); } }
+@keyframes char-fall { to { transform: translateY(14px) rotate(90deg); opacity: .55; } }
+@keyframes char-shadow-shrink { to { transform: scaleX(1.3) scaleY(.6); opacity: .4; } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
