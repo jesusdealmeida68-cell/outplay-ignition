@@ -58,21 +58,54 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { background: var(--background); }
-  body { margin: 0; min-width: 320px; background: var(--background); color: var(--foreground); font-family: var(--font-sans); }
-  button, input { font: inherit; }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    background: var(--background);
+  }
+  body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+  button,
+  input {
+    font: inherit;
+  }
 }
 
 @utility game-stage {
   background:
-    radial-gradient(ellipse 90% 46% at 50% 6%, color-mix(in oklch, var(--gold) 15%, transparent), transparent 68%),
-    radial-gradient(ellipse 130% 50% at 50% 112%, color-mix(in oklch, var(--crimson) 16%, transparent), transparent 72%),
+    radial-gradient(
+      ellipse 90% 46% at 50% 6%,
+      color-mix(in oklch, var(--gold) 15%, transparent),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 130% 50% at 50% 112%,
+      color-mix(in oklch, var(--crimson) 16%, transparent),
+      transparent 72%
+    ),
     var(--background);
 }
 
 @utility game-grain {
-  &::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .25; background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, color-mix(in oklch, var(--foreground) 4%, transparent) 4px); }
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.25;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      color-mix(in oklch, var(--foreground) 4%, transparent) 4px
+    );
+  }
 }
 
 /* Soft spotlight cone, used behind key art to feel like a lit stage rather than a flat image. */
@@ -85,7 +118,13 @@
     width: 150%;
     height: 85%;
     transform: translateX(-50%);
-    background: conic-gradient(from 180deg at 50% 0%, transparent 33%, color-mix(in oklch, var(--gold) 12%, transparent) 44%, color-mix(in oklch, var(--gold) 12%, transparent) 56%, transparent 67%);
+    background: conic-gradient(
+      from 180deg at 50% 0%,
+      transparent 33%,
+      color-mix(in oklch, var(--gold) 12%, transparent) 44%,
+      color-mix(in oklch, var(--gold) 12%, transparent) 56%,
+      transparent 67%
+    );
     filter: blur(10px);
     pointer-events: none;
     z-index: 0;
@@ -99,7 +138,11 @@
     position: absolute;
     inset: 8% 14%;
     border-radius: 999px;
-    background: radial-gradient(closest-side, color-mix(in oklch, var(--gold) 24%, transparent), transparent 72%);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklch, var(--gold) 24%, transparent),
+      transparent 72%
+    );
     z-index: 0;
   }
 }
@@ -107,7 +150,11 @@
 /* Pennant / rank-tag shape, gold gradient with a carved bevel edge. */
 @utility ribbon-tag {
   position: relative;
-  background: linear-gradient(180deg, color-mix(in oklch, var(--gold) 100%, white 14%), var(--primary-edge));
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--gold) 100%, white 14%),
+    var(--primary-edge)
+  );
   clip-path: polygon(0 50%, 10px 0, 100% 0, 100% 100%, 10px 100%);
   box-shadow: 0 2px 0 color-mix(in oklch, var(--primary-edge) 82%, black 25%);
 }
@@ -116,8 +163,16 @@
 @utility wood-panel {
   position: relative;
   background:
-    repeating-linear-gradient(180deg, color-mix(in oklch, black 9%, transparent) 0 2px, transparent 2px 27px),
-    linear-gradient(165deg, color-mix(in oklch, var(--surface) 100%, white 5%), color-mix(in oklch, var(--surface) 100%, black 22%));
+    repeating-linear-gradient(
+      180deg,
+      color-mix(in oklch, black 9%, transparent) 0 2px,
+      transparent 2px 27px
+    ),
+    linear-gradient(
+      165deg,
+      color-mix(in oklch, var(--surface) 100%, white 5%),
+      color-mix(in oklch, var(--surface) 100%, black 22%)
+    );
   box-shadow:
     0 18px 34px -18px color-mix(in oklch, black 78%, transparent),
     inset 0 1px 0 color-mix(in oklch, white 8%, transparent),
@@ -127,14 +182,25 @@
 
 /* Small bolt/rivet dot for wood-panel corners. */
 @utility rivet {
-  background: radial-gradient(circle at 34% 30%, color-mix(in oklch, white 60%, var(--gold)), var(--primary-edge) 72%);
-  box-shadow: 0 1px 2px color-mix(in oklch, black 65%, transparent), inset 0 -1px 1px color-mix(in oklch, black 35%, transparent);
+  background: radial-gradient(
+    circle at 34% 30%,
+    color-mix(in oklch, white 60%, var(--gold)),
+    var(--primary-edge) 72%
+  );
+  box-shadow:
+    0 1px 2px color-mix(in oklch, black 65%, transparent),
+    inset 0 -1px 1px color-mix(in oklch, black 35%, transparent);
 }
 
 /* Jewel-cut primary button: gradient face, inset gloss, thick bottom bevel that compresses on press. */
 @utility btn-jewel {
   position: relative;
-  background: linear-gradient(180deg, color-mix(in oklch, var(--gold) 100%, white 16%) 0%, var(--primary) 48%, color-mix(in oklch, var(--primary) 100%, black 8%) 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--gold) 100%, white 16%) 0%,
+    var(--primary) 48%,
+    color-mix(in oklch, var(--primary) 100%, black 8%) 100%
+  );
   box-shadow:
     0 5px 0 var(--primary-edge),
     0 10px 18px -6px color-mix(in oklch, black 60%, transparent),
@@ -143,31 +209,53 @@
   text-shadow: 0 1px 0 color-mix(in oklch, white 30%, transparent);
 }
 @utility btn-jewel-pressed {
-  box-shadow: inset 0 1px 0 color-mix(in oklch, white 45%, transparent), inset 0 -4px 6px -4px color-mix(in oklch, black 30%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, white 45%, transparent),
+    inset 0 -4px 6px -4px color-mix(in oklch, black 30%, transparent);
 }
 
 /* Carved metal plate for secondary buttons. */
 @utility btn-plate {
-  background: linear-gradient(180deg, color-mix(in oklch, var(--surface) 100%, white 5%), var(--surface));
-  box-shadow: inset 0 1px 0 color-mix(in oklch, white 6%, transparent), inset 0 -2px 0 color-mix(in oklch, black 35%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--surface) 100%, white 5%),
+    var(--surface)
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, white 6%, transparent),
+    inset 0 -2px 0 color-mix(in oklch, black 35%, transparent);
 }
 
 /* Recessed input slot, like a socket carved into the UI panel. */
 @utility field-slot {
   background: var(--input);
-  box-shadow: inset 0 2px 5px color-mix(in oklch, black 55%, transparent), inset 0 -1px 0 color-mix(in oklch, white 5%, transparent);
-  transition: box-shadow .15s ease, border-color .15s ease;
+  box-shadow:
+    inset 0 2px 5px color-mix(in oklch, black 55%, transparent),
+    inset 0 -1px 0 color-mix(in oklch, white 5%, transparent);
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
   &:focus {
-    box-shadow: inset 0 2px 5px color-mix(in oklch, black 55%, transparent), 0 0 0 3px color-mix(in oklch, var(--gold) 25%, transparent);
+    box-shadow:
+      inset 0 2px 5px color-mix(in oklch, black 55%, transparent),
+      0 0 0 3px color-mix(in oklch, var(--gold) 25%, transparent);
   }
 }
 
 @utility splash-enter {
-  animation: splash-reveal 1.45s cubic-bezier(.18,.72,.2,1) both;
+  animation: splash-reveal 1.45s cubic-bezier(0.18, 0.72, 0.2, 1) both;
 }
 
 @utility loading-track {
-  &::after { content: ""; display: block; height: 100%; width: 100%; transform-origin: left; background: linear-gradient(90deg, var(--crimson), var(--gold)); animation: load-bar 5s linear both; }
+  &::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    transform-origin: left;
+    background: linear-gradient(90deg, var(--crimson), var(--gold));
+    animation: load-bar 5s linear both;
+  }
 }
 
 /* Soft arena floor band at the bottom of the screen. */
@@ -179,7 +267,11 @@
     bottom: 0;
     height: 24%;
     background:
-      repeating-linear-gradient(180deg, color-mix(in oklch, var(--gold) 4%, transparent) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(
+        180deg,
+        color-mix(in oklch, var(--gold) 4%, transparent) 0 1px,
+        transparent 1px 34px
+      ),
       linear-gradient(180deg, transparent, color-mix(in oklch, black 42%, transparent));
     pointer-events: none;
     z-index: 0;
@@ -197,40 +289,201 @@
   animation: ember-rise linear infinite;
 }
 
-@keyframes splash-reveal { from { opacity: 0; transform: scale(.86); filter: blur(9px); } to { opacity: 1; transform: scale(1); filter: blur(0); } }
-@keyframes load-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes ember-rise { from { transform: translateY(0) scale(1); opacity: 0; } 15% { opacity: .9; } to { transform: translateY(-92dvh) scale(.4); opacity: 0; } }
+@keyframes splash-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+    filter: blur(9px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+@keyframes load-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes ember-rise {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(-92dvh) scale(0.4);
+    opacity: 0;
+  }
+}
 
 /* Character stage: a small original SVG "actor" that reacts to a game-state
    class instead of a video/sprite file — cheap, themeable, easy to extend. */
-.char-stage { position: relative; width: 108px; height: 126px; }
-.char-svg { width: 100%; height: 100%; overflow: visible; }
-.char-shadow { fill: color-mix(in oklch, black 55%, transparent); }
-.char-body-group { transform-origin: 60px 96px; }
-.char-arm { transform-origin: 82px 62px; }
-.char-weapon { transform-origin: 85px 70px; }
+.char-stage {
+  position: relative;
+  width: 128px;
+  height: 150px;
+}
+.char-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.char-shadow {
+  fill: color-mix(in oklch, black 55%, transparent);
+}
+.char-body-group {
+  transform-origin: 60px 96px;
+}
+.char-arm {
+  transform-origin: 82px 62px;
+}
+.char-weapon {
+  transform-origin: 85px 70px;
+}
+.char-portrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  transform-origin: 50% 92%;
+  filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.55));
+}
 
-.char-idle .char-body-group { animation: char-breathe 2.6s ease-in-out infinite; }
-.char-idle .char-arm { animation: char-arm-sway 2.6s ease-in-out infinite; }
+.char-idle .char-body-group {
+  animation: char-breathe 2.6s ease-in-out infinite;
+}
+.char-idle .char-arm {
+  animation: char-arm-sway 2.6s ease-in-out infinite;
+}
+.char-idle .char-portrait {
+  animation: char-breathe 2.6s ease-in-out infinite;
+}
 
-.char-attack .char-body-group { animation: char-lunge .42s ease-out; }
-.char-attack .char-weapon { animation: char-swing .42s cubic-bezier(.2,.9,.3,1); }
+.char-attack .char-body-group {
+  animation: char-lunge 0.42s ease-out;
+}
+.char-attack .char-weapon {
+  animation: char-swing 0.42s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.char-attack .char-portrait {
+  animation: char-lunge 0.42s ease-out;
+}
 
-.char-hit .char-body-group { animation: char-flinch .32s ease-out; }
-.char-hit .char-svg { animation: char-flash .32s ease-out; }
+.char-hit .char-body-group {
+  animation: char-flinch 0.32s ease-out;
+}
+.char-hit .char-svg {
+  animation: char-flash 0.32s ease-out;
+}
+.char-hit .char-portrait {
+  animation:
+    char-flinch 0.32s ease-out,
+    char-flash 0.32s ease-out;
+}
 
-.char-defeat .char-body-group { animation: char-fall .5s ease-in forwards; }
-.char-defeat .char-shadow { animation: char-shadow-shrink .5s ease-in forwards; }
+.char-defeat .char-body-group {
+  animation: char-fall 0.5s ease-in forwards;
+}
+.char-defeat .char-shadow {
+  animation: char-shadow-shrink 0.5s ease-in forwards;
+}
+.char-defeat .char-portrait {
+  animation: char-fall 0.5s ease-in forwards;
+}
 
-@keyframes char-breathe { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-3px) scale(1.015, .985); } }
-@keyframes char-arm-sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }
-@keyframes char-lunge { 0% { transform: translateX(0); } 35% { transform: translateX(10px) rotate(-3deg); } 100% { transform: translateX(0) rotate(0); } }
-@keyframes char-swing { 0% { transform: rotate(0deg); } 40% { transform: rotate(-70deg); } 70% { transform: rotate(20deg); } 100% { transform: rotate(0deg); } }
-@keyframes char-flinch { 0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 55% { transform: translateX(5px); } 100% { transform: translateX(0); } }
-@keyframes char-flash { 0%, 100% { filter: none; } 40% { filter: brightness(2) saturate(0) drop-shadow(0 0 6px white); } }
-@keyframes char-fall { to { transform: translateY(14px) rotate(90deg); opacity: .55; } }
-@keyframes char-shadow-shrink { to { transform: scaleX(1.3) scaleY(.6); opacity: .4; } }
+@keyframes char-breathe {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.015, 0.985);
+  }
+}
+@keyframes char-arm-sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-4deg);
+  }
+}
+@keyframes char-lunge {
+  0% {
+    transform: translateX(0);
+  }
+  35% {
+    transform: translateX(10px) rotate(-3deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+}
+@keyframes char-swing {
+  0% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(-70deg);
+  }
+  70% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes char-flinch {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  55% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes char-flash {
+  0%,
+  100% {
+    filter: none;
+  }
+  40% {
+    filter: brightness(2) saturate(0) drop-shadow(0 0 6px white);
+  }
+}
+@keyframes char-fall {
+  to {
+    transform: translateY(14px) rotate(90deg);
+    opacity: 0.55;
+  }
+}
+@keyframes char-shadow-shrink {
+  to {
+    transform: scaleX(1.3) scaleY(0.6);
+    opacity: 0.4;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

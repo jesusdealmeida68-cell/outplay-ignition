@@ -30,7 +30,8 @@ function CharactersDemo() {
           Toca em "Atacar" ou "Sofrer dano" para veres a animação de cada personagem reagir em tempo
           real.
         </p>
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <CharacterCard name="Cavaleiro" kind="warrior" image="/knight.png" />
           <CharacterCard name="Bárbaro" kind="warrior" />
           <CharacterCard name="Arqueira" kind="archer" />
           <CharacterCard name="Feiticeira" kind="mage" />

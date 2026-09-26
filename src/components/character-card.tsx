@@ -25,15 +25,19 @@ const PALETTE: Record<CharacterKind, { body: string; accent: string; weapon: str
  * A small original vector character (not based on any existing game's art)
  * that reacts to a game-state prop with CSS animation instead of a video/sprite
  * file. Cheap to render, easy to theme, and easy to extend with more states.
+ * If an `image` is provided, that art is used as the "actor" instead of the
+ * built-in SVG — same state classes, same animations, real artwork.
  */
 export function CharacterCard({
   name,
   kind,
   hp = 100,
+  image,
 }: {
   name: string;
   kind: CharacterKind;
   hp?: number;
+  image?: string;
 }) {
   const [state, setState] = useState<CharacterState>("idle");
   const [health, setHealth] = useState(hp);
@@ -72,26 +76,30 @@ export function CharacterCard({
           ["--char-weapon" as string]: palette.weapon,
         }}
       >
-        <svg viewBox="0 0 120 140" className="char-svg" aria-hidden="true">
-          <ellipse className="char-shadow" cx="60" cy="128" rx="30" ry="7" />
-          <g className="char-body-group">
-            <rect x="38" y="58" width="44" height="52" rx="14" fill="var(--char-body)" />
-            <circle cx="60" cy="40" r="22" fill="var(--char-body)" />
-            <circle cx="52" cy="38" r="3.2" fill="var(--background)" />
-            <circle cx="68" cy="38" r="3.2" fill="var(--background)" />
-            <rect x="46" y="18" width="28" height="10" rx="5" fill="var(--char-accent)" />
-            <g className="char-arm">
-              <rect x="76" y="62" width="12" height="34" rx="6" fill="var(--char-body)" />
-              <g className="char-weapon">
-                <rect x="82" y="34" width="7" height="40" rx="3" fill="var(--char-weapon)" />
-                <rect x="76" y="30" width="19" height="9" rx="3" fill="var(--char-weapon)" />
+        {image ? (
+          <img src={image} alt={name} className="char-portrait" />
+        ) : (
+          <svg viewBox="0 0 120 140" className="char-svg" aria-hidden="true">
+            <ellipse className="char-shadow" cx="60" cy="128" rx="30" ry="7" />
+            <g className="char-body-group">
+              <rect x="38" y="58" width="44" height="52" rx="14" fill="var(--char-body)" />
+              <circle cx="60" cy="40" r="22" fill="var(--char-body)" />
+              <circle cx="52" cy="38" r="3.2" fill="var(--background)" />
+              <circle cx="68" cy="38" r="3.2" fill="var(--background)" />
+              <rect x="46" y="18" width="28" height="10" rx="5" fill="var(--char-accent)" />
+              <g className="char-arm">
+                <rect x="76" y="62" width="12" height="34" rx="6" fill="var(--char-body)" />
+                <g className="char-weapon">
+                  <rect x="82" y="34" width="7" height="40" rx="3" fill="var(--char-weapon)" />
+                  <rect x="76" y="30" width="19" height="9" rx="3" fill="var(--char-weapon)" />
+                </g>
               </g>
+              <rect x="32" y="62" width="12" height="32" rx="6" fill="var(--char-body)" />
+              <rect x="42" y="106" width="14" height="26" rx="6" fill="var(--char-accent)" />
+              <rect x="64" y="106" width="14" height="26" rx="6" fill="var(--char-accent)" />
             </g>
-            <rect x="32" y="62" width="12" height="32" rx="6" fill="var(--char-body)" />
-            <rect x="42" y="106" width="14" height="26" rx="6" fill="var(--char-accent)" />
-            <rect x="64" y="106" width="14" height="26" rx="6" fill="var(--char-accent)" />
-          </g>
-        </svg>
+          </svg>
+        )}
       </div>
 
       <div className="w-full text-center">
